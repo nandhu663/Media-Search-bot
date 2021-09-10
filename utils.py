@@ -203,7 +203,7 @@ async def get_details(movie):
 		             'plot': 'full'
 		}
 
-            url=f'https://www.omdbapi.com/?s={title}&apikey={API_KEY}'
+            url=f"https://www.omdbapi.com/?apikey={API_KEY}"
         try:
             n = requests.get(url=link, params = parame)
             a = json.loads(n.text)
