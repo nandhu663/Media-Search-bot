@@ -2,7 +2,7 @@ import os
 import logging
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from info import START_MSG, START_IMG, CHANNELS, ADMINS, AUTH_CHANNEL, CUSTOM_FILE_CAPTION
+from info import START_MSG, CHANNELS, ADMINS, AUTH_CHANNEL, CUSTOM_FILE_CAPTION
 from utils import Media, get_file_details
 from pyrogram.errors import UserNotParticipant
 logger = logging.getLogger(__name__)
@@ -109,11 +109,6 @@ async def start(bot, cmd):
             )
         )
 
-    START_IMG = os.environ.get('START_IMG', None)
-    if START_IMG is None:
-        img = "https://telegra.ph/file/3cddff05c6461a471af4c.jpg"
-  else:
-    img = START_IMG
 
 @Client.on_message(filters.command('channel') & filters.user(ADMINS))
 async def channel_info(bot, message):
