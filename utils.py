@@ -202,7 +202,7 @@ async def get_details(movie):
 		             'KEY': API_KEY,
 		             'plot': 'full'
 		}
-        else:
+
             url=f'https://www.omdbapi.com/?s={title}&apikey={API_KEY}'
         try:
             n = requests.get(url=link, params = parame)
