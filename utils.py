@@ -215,7 +215,7 @@ async def get_details(movie):
                 rating = y.get("imdbRating")
         except Exception:
             pass
-    return (movie, year, rated, genre, plot, rating)
+    return movie, year, rated, genre, plot, rating
 
 
 async def get_all(list):
