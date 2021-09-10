@@ -51,13 +51,15 @@ class Poster(Document):
     class Meta:
         collection_name = COLLECTION_NAME_2
 
-async def save_poster(imdb_id, title, year, url):
+async def save_poster(title, year, rated, genre, plot, rating):
     try:
         data = Poster(
-            imdb_id=imdb_id,
             title=title,
             year=int(year),
-            poster=url
+            rated=rated,
+            plot=plot,
+            genre=genre,
+            rating=rating
         )
     except ValidationError:
         logger.exception('Error occurred while saving poster in database')
