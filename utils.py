@@ -137,9 +137,13 @@ async def get_search_results(query, file_type=None, max_results=10, offset=0):
 
 
 async def get_filter_results(query):
-    raw_pattern = query.lower().strip().replace(' ', '.*')
-    if not raw_pattern:
+    query = query.strip()
+    if not query:
         raw_pattern = '.'
+    elif ' ' not in query:
+        raw_pattern = r'(\b|[\.\+\-_])' + query + r'(\b|[\.\+\-_])'
+    else:
+        raw_pattern = query.replace(' ', r'.*[\s\.\+\-_]')
     try:
         regex = re.compile(raw_pattern, flags=re.IGNORECASE)
     except:
@@ -206,13 +210,20 @@ async def get_poster(movie):
                 poster = y.get("Poster")
                 year=y.get("Year")[:4]
                 id=y.get("imdbID")
-                await save_poster(id, v, year, poster)
+                await get_all(a.get("Search"))
         except Exception as e:
             logger.exception(e)
             pass
     return poster
 
 
+async def get_all(list):
+    for y in list:
+        v=y.get("Title").lower().strip()
+        poster = y.get("Poster")
+        year=y.get("Year")[:4]
+        id=y.get("imdbID")
+        await save_poster(id, v, year, poster)
 
 
 def encode_file_id(s: bytes) -> str:
