@@ -12,7 +12,6 @@ import os
 import PTN
 import requests
 import json
-import pyrogram
 from info import DATABASE_URI, DATABASE_NAME, COLLECTION_NAME, USE_CAPTION_FILTER, AUTH_CHANNEL, API_KEY
 DATABASE_URI_2=os.environ.get('DATABASE_URI_2', DATABASE_URI)
 DATABASE_NAME_2=os.environ.get('DATABASE_NAME_2', DATABASE_NAME)
@@ -51,15 +50,13 @@ class Poster(Document):
     class Meta:
         collection_name = COLLECTION_NAME_2
 
-async def save_poster(title, year, rated, genre, plot, rating):
+async def save_poster(imdb_id, title, year, url):
     try:
         data = Poster(
+            imdb_id=imdb_id,
             title=title,
             year=int(year),
-            rated=rated,
-            plot=plot,
-            genre=genre,
-            rating=rating
+            poster=url
         )
     except ValidationError:
         logger.exception('Error occurred while saving poster in database')
@@ -140,13 +137,9 @@ async def get_search_results(query, file_type=None, max_results=10, offset=0):
 
 
 async def get_filter_results(query):
-    query = query.strip()
-    if not query:
+    raw_pattern = query.lower().strip().replace(' ', '.*')
+    if not raw_pattern:
         raw_pattern = '.'
-    elif ' ' not in query:
-        raw_pattern = r'(\b|[\.\+\-_])' + query + r'(\b|[\.\+\-_])'
-    else:
-        raw_pattern = query.replace(' ', r'.*[\s\.\+\-_]')
     try:
         regex = re.compile(raw_pattern, flags=re.IGNORECASE)
     except:
@@ -178,57 +171,48 @@ async def is_subscribed(bot, query):
 
     return False
 
-async def get_details(movie):
-	details = PTN.parse(movie)
-	try:
-		title=details["title"]
-	except KeyError:
-		title=movie
-	try:
-		year=details["year"]
-		year=int(year)
-	except KeyError:
-		year=None
-	if year:
-		parame = {
-		            'title': str(title).lower().strip(),
-		            'year': int(year),
-		            'KEY': API_KEY,
-		            'plot': 'full'
-		}
-	else:
-		parame = {
-		             'title': str(title).lower().strip(),
-		             'KEY': API_KEY,
-		             'plot': 'full'
-		}
-
-            url=f"https://www.omdbapi.com/?apikey={API_KEY}"
+async def get_poster(movie):
+    extract = PTN.parse(movie)
+    try:
+        title=extract["title"]
+    except KeyError:
+        title=movie
+    try:
+        year=extract["year"]
+        year=int(year)
+    except KeyError:
+        year=None
+    if year:
+        filter = {'$and': [{'title': str(title).lower().strip()}, {'year': int(year)}]}
+    else:
+        filter = {'title': str(title).lower().strip()}
+    cursor = Poster.find(filter)
+    is_in_db = await cursor.to_list(length=1)
+    poster=None
+    if is_in_db:
+        for nyav in is_in_db:
+            poster=nyav.poster
+    else:
+        if year:
+            url=f'https://www.omdbapi.com/?s={title}&y={year}&apikey={API_KEY}'
+        else:
+            url=f'https://www.omdbapi.com/?s={title}&apikey={API_KEY}'
         try:
-            n = requests.get(url=link, params = parame)
+            n = requests.get(url)
             a = json.loads(n.text)
             if a["Response"] == 'True':
                 y = a.get("Search")[0]
-                v=y.get("Title").strip()
+                v=y.get("Title").lower().strip()
+                poster = y.get("Poster")
                 year=y.get("Year")[:4]
-                rated = y.get("Rated")
-                genre = y.get("Genre")
-                plot = y.get("Plot")
-                rating = y.get("imdbRating")
-        except Exception:
+                id=y.get("imdbID")
+                await save_poster(id, v, year, poster)
+        except Exception as e:
+            logger.exception(e)
             pass
-    return movie, year, rated, genre, plot, rating
+    return poster
 
 
-async def get_all(list):
-    for y in list:
-        v=y.get("Title").strip()
-        year=y.get("Year")[:4]
-        rated = y.get("Rated")
-        genre = y.get("Genre")
-        plot = y.get("Plot")
-        rating = y.get("imdbRating")
-        await save_poster(v, year, rated , genre , plot, rating)
 
 
 def encode_file_id(s: bytes) -> str:
