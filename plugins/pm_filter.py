@@ -8,7 +8,7 @@ from pyrogram.errors import UserNotParticipant
 from utils import get_filter_results, get_file_details, is_subscribed, get_poster
 BUTTONS = {}
 BOT = {}
-RATING = ["5.1 | IMDB", "6.2 | IMDB", "7.3 | IMDB", "8.4 | IMDB", "9.5 | IMDB", ]
+RATING = ["5.1 | IMDB", "6.2 | IMDB", "7.3 | IMDB", "8.4 | IMDB", "9.5 | IMDB", "7.6 | IMDB", "6.9 | IMDB", "6.6 | IMDB", "7.9 | IMDB", ]
 GENRES = ["fun, fact",
          "Thriller, Comedy",
          "Drama, Comedy",
@@ -16,7 +16,10 @@ GENRES = ["fun, fact",
          "Action, Adventure",
          "Film Noir",
          "Documentary",
-         "Horror, Thriller"]
+         "Horror, Thriller",
+         "Action, Sci-Fi",
+         "Adventure, Fantasy",
+         "Crime, Drama, Mystery"]
 
 @Client.on_message(filters.text & filters.private & filters.incoming & filters.user(AUTH_USERS) if AUTH_USERS else filters.text & filters.private & filters.incoming)
 async def filter(client, message):
