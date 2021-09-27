@@ -8,7 +8,7 @@ from pyrogram.errors import UserNotParticipant
 from utils import get_filter_results, get_file_details, is_subscribed, get_poster
 BUTTONS = {}
 BOT = {}
-RATING = ["5.1 | IMDB", "6.2 | IMDB", "7.3 | IMDB", "8.4 | IMDB", "9.5 | IMDB", "7.6 | IMDB", "6.9 | IMDB", "6.6 | IMDB", "7.9 | IMDB", ]
+RATING = ["5.1 | IMDB", "6.2 | IMDB", "7.3 | IMDB", "8.4 | IMDB", "9.5 | IMDB", "7.6 | IMDB", "6.9 | IMDB", "6.6 | IMDB", "7.9 | IMDB", "5.4 | IMDB", "5.8 | IMDB", "8.7 | IMDB", "7.1 | IMDB", "9.1 | IMDB", ]
 GENRES = ["fun, fact",
          "Thriller, Comedy",
          "Drama, Comedy",
@@ -19,7 +19,9 @@ GENRES = ["fun, fact",
          "Horror, Thriller",
          "Action, Sci-Fi",
          "Adventure, Fantasy",
-         "Crime, Drama, Mystery"]
+         "Crime, Drama, Mystery",
+         "Crime, Mystery, Thriller",
+         "Biography, Drama"]
 
 @Client.on_message(filters.text & filters.private & filters.incoming & filters.user(AUTH_USERS) if AUTH_USERS else filters.text & filters.private & filters.incoming)
 async def filter(client, message):
@@ -126,7 +128,7 @@ async def group(client, message):
         btn = []
 
         search = message.text
-        result_txt = f"**🎬 Title:** {search}\n**🌟 Rating:** {random.choice(RATING)}\n**🎭 Genre:** {random.choice(GENRES)}\n**©️ {message.chat.title} 😌**"
+        result_txt = f"**🎬 Title:** {search}\n**🌟 Rating:** {random.choice(RATING)}\n**🎭 Genre:** {random.choice(GENRES)}\n\n**©️ {message.chat.title} **"
 
         nyva=BOT.get("username")
         if not nyva:
