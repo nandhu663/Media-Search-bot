@@ -197,3 +197,13 @@ async def bot_info(bot, message):
         ]
         ]
     await message.reply(text="<b>Developer : <a href='https://t.me/MrC_VENOM'>MrC《》VENOM</a>\nLanguage : <code>Python3</code>\nLibrary : <a href='https://docs.pyrogram.org/'>Pyrogram asyncio</a>\nSupport Group : <a href='https://t.me/tvseriezzz'>Click here</a>\nUpdate Channel : <a href='https://t.me/tvseriezzz_update'>♠️ 𝑨𝒍𝒍 𝑰𝒏 𝑶𝒏𝒆 𝑮𝒓𝒐𝒖𝒑 {Update}</a> </b>", reply_markup=InlineKeyboardMarkup(buttons), disable_web_page_preview=True)
+
+@Client.on_message(filters.command('help'))
+async def bot_info(bot, message):
+    buttons = [
+        [
+            InlineKeyboardButton('Update Channel', url='https://t.me/tvseriezzz'),
+            InlineKeyboardButton('Support Group', url='https://t.me/tvseriezzz_update')
+        ]
+        ]
+    await message.reply(text="<b>If You Have Any Doubts And If Any Errors In Bugs Inform Us On Our Support Group ❗️\n Use Below Buttons To Get Support Group / Update channel Links </b>", reply_markup=InlineKeyboardMarkup(buttons), disable_web_page_preview=True)
