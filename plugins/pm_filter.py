@@ -111,7 +111,7 @@ async def filter(client, message):
 
                 caption=f"Couldn't Find This Movie.Please Try Again Or Search Google Or Not Get Movie Report Admins👉"
 
-                        f"<b><a href='https://t.me/Myk123'>👉Admin</a></b>. \n\n"
+                        f"<b><a href='https://t.me/tvseriezzz'>👉Group</a></b>. \n\n"
 
                         f"ഈ സിനിമയുടെ ഒറിജിനൽ പേര് ഗൂഗിളിൽ പോയി കണ്ടെത്തി അതുപോലെ ഇവിടെ കൊടുക്കുക🔍കൂടുതൽ അറിയാൻ വീഡിയോ കാണുക(25 Sec)",
 
@@ -204,7 +204,7 @@ async def group(client, message):
 
                 caption=f"Couldn't Find This Movie.Please Try Again Or Search Google Or Not Get Movie Report Admins👉"
 
-                        f"<b><a href='https://t.me/Myk123'>👉Admin</a></b>. \n\n"
+                        f"<b><a href='https://t.me/tvseriezzz'>👉Group</a></b>. \n\n"
 
                         f"ഈ സിനിമയുടെ ഒറിജിനൽ പേര് ഗൂഗിളിൽ പോയി കണ്ടെത്തി അതുപോലെ ഇവിടെ കൊടുക്കുക🔍കൂടുതൽ അറിയാൻ വീഡിയോ കാണുക(25 Sec)",
 
